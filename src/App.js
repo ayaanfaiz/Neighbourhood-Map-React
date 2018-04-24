@@ -4,13 +4,13 @@ import MenuBar from './MenuBar'
 
 class App extends Component {
 
- 
+
 
   render() {
     return (
       <div >
+<MapContainer />
 
-      <MapContainer />
       <MenuBar />
 
       </div>
