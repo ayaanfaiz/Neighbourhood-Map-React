@@ -7,58 +7,25 @@ import {
 import React, { Component } from "react";
 import Info from './Info';
 
-const API = 'https://api.foursquare.com/v2/venues/'
-const AuthURL = '?&client_id=OQDS4CPELU4LLHPFADU1CQRMF0WPCH2APOUQBFAOLBW1AQQZ&client_secret=0XWNSR4AHOD5IRHPW0DC3BNT1TMARJCQAYL34ZVMYESS1Q1D&v=20180423'
-const venue = [
-  '4b53367af964a5208e9227e3',
-  '428a8580f964a52083231fe3',
-  '56e333e0498e29dd9f957fb4',
-  '3fd66200f964a52053ea1ee3',
-  '43fe1ba4f964a520f82f1fe3',
-  '435c2400f964a52012291fe3'
-]
+
 
 export class MapContainer extends Component {
   constructor(){
     super();
     this.state = {
-      showingInfoWindow: false,
-      activeMarker: {},
-      selectedPlace: {},
+      //selectedPlace: {},
       response: [],
-      ven: [],
       photo: 'hi'
     };
   }
 
-  componentDidMount(){
-    var res = []
-    venue.forEach((value) => {
-        fetch(API + value + AuthURL)
-        .then(response => response.json()).then(value => res.push(value.response.venue)
-    )});
-    this.setState({ ven: res,
-                    photo: 'hey'})
-                    console.log(this.state.ven);
-    }
+componentDidMount(){
+  this.setState({ photo: 'hey'})
+}
 
 
-  onMarkerClick = (props, marker, e) =>
-    this.setState({
-      selectedPlace: props,
-      activeMarker: marker,
-      showingInfoWindow: true
-    });
-  onMapClicked = props => {
-    if (this.state.showingInfoWindow) {
-      this.setState({
-        showingInfoWindow: false,
-        activeMarker: null
-      });
-    }
-  };
   render() {
-    console.log(this.state.ven);
+    console.log(this.props.ven);
     return (
       <div>
       <Map
@@ -68,83 +35,82 @@ export class MapContainer extends Component {
           lng: -73.984472
         }}
         zoom={15}
-        onClick={this.onMapClicked}
+        onClick={this.props.onMapClicked}
       >
       <Marker
-        onClick={this.onMarkerClick}
+        onClick={this.props.onMarkerClick}
         onMouseover={this.onMouseoverMarker}
         name={"The Museum of Modern Art"}
         position={{ lat: 40.761447, lng: -73.977642 }}
         photo={(this.state.photo === 'hey') ? (
-          this.state.ven.filter((place) =>
+          this.props.ven.filter((place) =>
           (place.name === "The Museum of Modern Art (MOMA) - Art Lab")
         )) : 'hi'}
       />
       <Marker
-        onClick={this.onMarkerClick}
+        onClick={this.props.onMarkerClick}
         onMouseover={this.onMouseoverMarker}
         name={"New York City Center"}
         position={{ lat: 40.763836, lng: -73.97953 }}
         photo={(this.state.photo === 'hey') ? (
-          this.state.ven.filter((place) =>
+          this.props.ven.filter((place) =>
           (place.name === "New York City Center")
         )) : 'hi'}
       />
       <Marker
-        onClick={this.onMarkerClick}
+        onClick={this.props.onMarkerClick}
         onMouseover={this.onMouseoverMarker}
         name={"The Monkey Bar"}
         position={{ lat: 40.759903, lng: -73.973222 }}
         photo={(this.state.photo === 'hey') ? (
-          this.state.ven.filter((place) =>
+          this.props.ven.filter((place) =>
           (place.name === "Monkey Bar")
         )) : 'hi'}
       />
         <Marker
-          onClick={this.onMarkerClick}
+          onClick={this.props.onMarkerClick}
           onMouseover={this.onMouseoverMarker}
           title={"The marker`s title will appear as a tooltip."}
           name={"PlayStation Theater"}
           position={{ lat: 40.757888, lng: -73.986247 }}
           photo={(this.state.photo === 'hey') ? (
-            this.state.ven.filter((place) =>
+            this.props.ven.filter((place) =>
             (place.name === "PlayStation Theater")
           )) : 'hi'}
         />
         <Marker
-          onClick={this.onMarkerClick}
+          onClick={this.props.onMarkerClick}
           onMouseover={this.onMouseoverMarker}
           name={"Hard Rock Cafe"}
           position={{ lat: 40.756945, lng: -73.98659 }}
           photo={(this.state.photo === 'hey') ? (
-            this.state.ven.filter((place) =>
+            this.props.ven.filter((place) =>
             (place.name === "Hard Rock Cafe New York")
           )) : 'hi'}
         />
 
         <Marker
-          onClick={this.onMarkerClick}
+          onClick={this.props.onMarkerClick}
           onMouseover={this.onMouseoverMarker}
           name={"Barnes & Noble"}
 
           position={{ lat: 40.755742, lng: -73.978994 }}
           photo={(this.state.photo === 'hey') ? (
-            this.state.ven.filter((place) =>
+            this.props.ven.filter((place) =>
             (place.name === "Barnes & Noble")
           )) : 'hi'}
 
         />
 
         <InfoWindow
-          marker={this.state.activeMarker}
-          visible={this.state.showingInfoWindow}
+          marker={this.props.activeMarker}
+          visible={this.props.showingInfoWindow}
         >
-        {console.log(this.state.selectedPlace)
-        }
+
           <div>
 
-            <h4>{this.state.selectedPlace.name}</h4>
-            <img src={(this.state.selectedPlace.photo) && (this.state.selectedPlace.photo.length > 0) && (this.state.selectedPlace.photo[0].photos.groups[0].items[0].prefix + '200x200' + this.state.selectedPlace.photo[0].photos.groups[0].items[0].suffix)}/>
+            <h4>{this.props.selectedPlace.name}</h4>
+            <img src={(this.props.selectedPlace.photo) && (this.props.selectedPlace.photo.length > 0) && (this.props.selectedPlace.photo[0].photos.groups[0].items[0].prefix + '200x200' + this.props.selectedPlace.photo[0].photos.groups[0].items[0].suffix)}/>
           </div>
         </InfoWindow>
       </Map>
